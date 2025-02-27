@@ -38,3 +38,28 @@ When you click play, MSM does several things.
 | `serverId` | int | Specific ID for the `serverIp` |
 | `serverIp` | string | IP that the Client will use to connect to |
 | `contentUrl` | string | URL that MSM downloads update content from |
+
+4. Next, MSM will attempt to download the new files via the `contentUrl` and stores them in your User `%AppData%/LocalLow/`.
+
+>[!NOTE]
+>Reminder that MSM uses Smartfox2X for all it's Client➔Server necessities.
+
+5. Now, MSM has to connect to the Game Servers. It'll attempt to connect at `(serverIp):9933`.
+
+6. If it's able to connect, MSM will attempt to Login using Params:
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `username` | string | `user_game_id` from the Auth Token response |
+| `password` | string | Your password. Depends on your `login_type` |
+| `zone` | string | The Smartfox Zone to join |
+| `auth_info` | SFSObject | Login Params |
+
+Login Params:
+| Name | Type | Description |
+| --- | --- | --- |
+| `token` | string | `access_token` from the Auth Token response |
+| `access_key` | string | A hardcoded string inside the MSM EXE |
+| `client_version` | string | The current Client Version |
+
+7. Now, if it's all successful, the server should add multiple elements to your User and Session, and send `gs_initialized`.
