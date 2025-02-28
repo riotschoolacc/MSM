@@ -85,7 +85,7 @@ Login Params:
 | `raw_device_id` | string | (Not Required) Raw Client Device ID |
 | `client_lang` | string | (Required) Language the Client prefers |
 
-### Even if it's not required, the Client still sends it. 
+#### Even if a param is not required, the Client still sends it. 
 
 7. If all goes well, the server should add multiple elements to your Session Object via the Decrypted Token and send `gs_initialized` with one parameter, your `bbb_id`.
 
@@ -100,17 +100,28 @@ New Session Params:
 | `last_updated` | long | The `last_update` from your Login Params |
 | `last_update_version` | string | The `last_update_version` from your Login Params |
 | `client_device` | string | The `client_device` from your Login Params |
-| `client_os` | string | The `client_os` from your Login Params |
 | `client_platform` | string | The `client_platform` from your Login Params |
 | `client_subplatform` | string | The `client_subplatform` from your Login Params |
+| `client_os` | string | The `client_os` from your Login Params |
 | `raw_device_id` | string | The `raw_device_id` from your Login Params |
 | `client_lang` | string | the `client_lang` from your Login Params |
 
-### If some Params aren't in your Login Data, it will set the Session Param for it to an empty string.
+#### If some Params aren't in your Login Data, it will set the Session Param for it to an empty string.
 
-8. Now, MSM attempts to login to the `zone`. The server will then extract all the params from the Session Object and add them to the User Object.
+8. Now, MSM attempts to login to the `zone`. The server will then extract some of the params from the Session Object and add them to the User Object, and some other params not from the Session. *This is because User Objects aren't created until after the Login process, but Sessions are.*
 
-#### *This is because User Objects aren't created until after the Login process, but Sessions are.*
+New User Params:
+| Name | Type | Description |
+| --- | --- | --- |
+| `player_object` | SFSObject | Player Data SFSObject |
+| `bbb_id` | long | Users BBB ID |
+| `client_version` | string | The `client_version` from your Session Params |
+| `last_update_version` | string | The `last_update_version` from your Session Params |
+| `client_device` | string | The `client_device` from your Session Params |
+| `client_platform` | string | The `client_platform` from your Session Params |
+| `client_subplatform` | string | The `client_subplatform` from your Session Params |
+| `client_os` | string | The `client_os` from your Session Params |
+| `ip_address` | string | The Users IP Address |
 
 10. Now MSM needs to download all the [Static Data](https://www.indeed.com/career-advice/career-development/static-data-vs-dynamic-data). MSM sends 1 param for all of them, `last_updated`, although it is not required. You can view all Requests MSM sends [here](https://github.com/riotschoolacc/MSM-Server-Tools/blob/main/requests.md).
 
