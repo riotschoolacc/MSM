@@ -87,7 +87,7 @@ Login Params:
 
 #### Even if a param is not required, the Client still sends it. 
 
-7. If all goes well, the server should add multiple elements to your Session Object via the Decrypted Token and send `gs_initialized` with one parameter, your `bbb_id`.
+7. If all goes well, the server should add multiple elements to your Session Object via the Decrypted Token.
 
 New Session Params:
 | Name | Type | Description |
@@ -122,7 +122,16 @@ New User Params:
 | `client_subplatform` | string | The `client_subplatform` from your Session Params |
 | `client_os` | string | The `client_os` from your Session Params |
 | `ip_address` | string | The Users IP Address |
+| `client_lang` | string | the `client_lang` from your Session Params |
+| `idfv` | string | (**Only if `client_platform` is `ios`) The `raw_device_id` from your Session Params |
+| `android_id` | string | (**Only if `client_platform` is `android`) The `raw_device_id` from your Session Params |
 
-10. Now MSM needs to download all the [Static Data](https://www.indeed.com/career-advice/career-development/static-data-vs-dynamic-data). MSM sends 1 param for all of them, `last_updated`, although it is not required. You can view all Requests MSM sends [here](https://github.com/riotschoolacc/MSM-Server-Tools/blob/main/requests.md).
+9. After the User has joined the `zone`, the Server will send `gs_initialized` with one param, your `bbb_id`.
 
-11. After downloading all the Static Data and updating it in the Cache in your User `%AppData%/LocalLow/`, they must finish up. MSM will send `gs_player` to get all Player Data, then process any Previous Purchases, and finally load your Player Data.
+10. Then, the Server will send all `user_game_settings`.
+
+11. Now MSM needs to download all the [Static Data](https://www.indeed.com/career-advice/career-development/static-data-vs-dynamic-data). MSM sends 1 param for all of them, `last_updated`, although it is not required. You can view all Requests MSM sends [here](https://github.com/riotschoolacc/MSM-Server-Tools/blob/main/requests.md).
+
+12. After downloading all the Static Data and updating it in the Cache in your User `%AppData%/LocalLow/`, they must finish up. MSM will send `gs_player` to get all Player Data, then process any Previous Purchases, and finally load your Player Data.
+
+If you were able to Stomach all of that, good for you, but now it's time for the Real Game.
