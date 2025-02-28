@@ -35,7 +35,7 @@ When you click play, MSM does several things.
 | Name | Type | Description |
 | --- | --- | --- |
 | `ok` | boolean | `true` if successful, `false` if not. All other params will not be sent if `false` |
-| `serverId` | int | Specific ID for the `serverIp` |
+| `serverId` | int | Specific ID for the AWS instance that uses `serverIp` |
 | `serverIp` | string | IP that the Client will use to connect to |
 | `contentUrl` | string | URL that MSM downloads update content from |
 
@@ -61,9 +61,21 @@ Login Params:
 | `token` | string | `access_token` from the Auth Token response |
 | `access_key` | string | A hardcoded string inside the MSM EXE |
 | `client_version` | string | The current Client Version |
+| `last_updated` | long | (Not Required) Client Last Update |
+| `last_update_version` | string | Client Last Updated Version |
+| `client_device` | string | (Not Required) Client Device ID |
+| `client_os` | string | (Not Required) Client Device OS Version |
+| `client_platform` | string | Client MSM Platform (Mobile or PC) |
+| `client_subplatform` | string | (Not Required) Client MSM Sub-Platform (Steam) |
+| `raw_device_id` | string | (Not Required) Raw Client Device ID |
+| `client_lang` | string | Language the Client prefers |
 
-7. If all goes well, the server should add multiple elements to your User Object and send `gs_initialized` with one parameter: your `bbb_id`.
+7. If all goes well, the server should add multiple elements to your User and Session Object and send `gs_initialized` with one parameter, your `bbb_id`.
 
-8. Now MSM needs to download all the [Static Data](https://www.indeed.com/career-advice/career-development/static-data-vs-dynamic-data). MSM sends 1 param for all of them, `last_updated`, although it is not required. You can view all Requests MSM sends [here](https://github.com/riotschoolacc/MSM-Server-Tools/blob/main/requests.md).
+New User and Session Params:
+| Name | Type | Description |
+| --- | --- | --- |
 
-9. After downloading all the Static Data and updating it in the Cache, they must finish up. MSM will send `gs_player` to get all Player Data, then process any Previous Purchases, and finally load your Player Data.
+9. Now MSM needs to download all the [Static Data](https://www.indeed.com/career-advice/career-development/static-data-vs-dynamic-data). MSM sends 1 param for all of them, `last_updated`, although it is not required. You can view all Requests MSM sends [here](https://github.com/riotschoolacc/MSM-Server-Tools/blob/main/requests.md).
+
+10. After downloading all the Static Data and updating it in the Cache in your User `%AppData%/LocalLow/`, they must finish up. MSM will send `gs_player` to get all Player Data, then process any Previous Purchases, and finally load your Player Data.
