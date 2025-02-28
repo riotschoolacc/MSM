@@ -17,7 +17,7 @@ Play
 -
 When you click play, MSM does several things.
 
-1. The first thing MSM does when you click play is attempt to log in to Steam. If the game says "Steam Authorization failed, " close MSM and try to launch it via Steam.
+1. The first thing MSM does when you click play is attempt to log in to Steam **only if** your `login_type` is `steam`. 
 
 2. The next thing MSM does when you click play is an attempt to authorize your account by sending a POST request to `auth.bbbgame.net/auth/api/token/`. If it's successful, the server will respond with several elements:
 
@@ -28,7 +28,7 @@ When you click play, MSM does several things.
 | `login_types` | array | List of Login Types the account uses (Usually only one) |
 | `access_token` | string | Encrypted Access Token the Client uses for several cases. Contains an Encrypted JSON. More below.
 | `token_type` | string | Token Type used (Always `bearer`). |
-| `expires_at` | long | When it will expire (Current Unix Time + 1200) |
+| `expires_at` | long | When it will expire (Current Unix Time + 1200, or 20 Minutes.) |
 
 Decrypted Access Token:
 | Name | Type | Description |
@@ -38,7 +38,7 @@ Decrypted Access Token:
 | `g` | int | Game ID associated with the platform you're playing on (1 or 27) |
 | `token_version` | int | Version the Token is using (always 1) |
 | `generated_on` | long | When the Token was generated (Current Unix Time) |
-| `expires_at` | long | When it will expire (Current Unix Time + 1200) |
+| `expires_at` | long | When it will expire (Current Unix Time + 1200, or 20 Minutes.) |
 | `username` | string | Account Login Username |
 | `login_type` | string | Current Login Type |
 
@@ -73,24 +73,45 @@ Decrypted Access Token:
 Login Params:
 | Name | Type | Description |
 | --- | --- | --- |
-| `token` | string | `access_token` from the Auth Token response |
-| `access_key` | string | A hardcoded string inside the MSM EXE |
-| `client_version` | string | The current Client Version |
-| `last_updated` | long | (Not Required) Client Last Update |
-| `last_update_version` | string | Client Last Updated Version |
+| `token` | string | (Required) `access_token` from the Auth Token response |
+| `access_key` | string | (Required) A hardcoded string inside the MSM EXE |
+| `client_version` | string | (Required) The current Client Version |
+| `last_updated` | long | (Not Required) Client Last Update Unix Timestamp |
+| `last_update_version` | string | (Required) Client Last Updated Version |
 | `client_device` | string | (Not Required) Client Device ID |
 | `client_os` | string | (Not Required) Client Device OS Version |
-| `client_platform` | string | Client MSM Platform (Mobile or PC) |
+| `client_platform` | string | (Required) Client MSM Platform (Mobile or PC) |
 | `client_subplatform` | string | (Not Required) Client MSM Sub-Platform (Steam) |
 | `raw_device_id` | string | (Not Required) Raw Client Device ID |
-| `client_lang` | string | Language the Client prefers |
+| `client_lang` | string | (Required) Language the Client prefers |
 
-7. If all goes well, the server should add multiple elements to your User and Session Object and send `gs_initialized` with one parameter, your `bbb_id`.
+### Even if it's not required, the Client still sends it. 
 
-New User and Session Params:
+7. If all goes well, the server should add multiple elements to your Session Object via the Decrypted Token and send `gs_initialized` with one parameter, your `bbb_id`.
+
+New Session Params:
 | Name | Type | Description |
 | --- | --- | --- |
+| `user_game_id` | string | Your `user_game_id` extracted from your Token |
+| `username` | string | Your `username` extracted from your Token |
+| `loginType` | string | Your current `login_type` extracted from your Token |
+| `access_key` | string | The `access_key` from your Login Params |
+| `client_version` | string | The `client_version` from your Login Params |
+| `last_updated` | long | The `last_update` from your Login Params |
+| `last_update_version` | string | The `last_update_version` from your Login Params |
+| `client_device` | string | The `client_device` from your Login Params |
+| `client_os` | string | The `client_os` from your Login Params |
+| `client_platform` | string | The `client_platform` from your Login Params |
+| `client_subplatform` | string | The `client_subplatform` from your Login Params |
+| `raw_device_id` | string | The `raw_device_id` from your Login Params |
+| `client_lang` | string | the `client_lang` from your Login Params |
 
-9. Now MSM needs to download all the [Static Data](https://www.indeed.com/career-advice/career-development/static-data-vs-dynamic-data). MSM sends 1 param for all of them, `last_updated`, although it is not required. You can view all Requests MSM sends [here](https://github.com/riotschoolacc/MSM-Server-Tools/blob/main/requests.md).
+### If some Params aren't in your Login Data, it will set the Session Param for it to an empty string.
 
-10. After downloading all the Static Data and updating it in the Cache in your User `%AppData%/LocalLow/`, they must finish up. MSM will send `gs_player` to get all Player Data, then process any Previous Purchases, and finally load your Player Data.
+8. Now, MSM attempts to login to the `zone`. The server will then extract all the params from the Session Object and add them to the User Object.
+
+#### *This is because User Objects aren't created until after the Login process, but Sessions are.*
+
+10. Now MSM needs to download all the [Static Data](https://www.indeed.com/career-advice/career-development/static-data-vs-dynamic-data). MSM sends 1 param for all of them, `last_updated`, although it is not required. You can view all Requests MSM sends [here](https://github.com/riotschoolacc/MSM-Server-Tools/blob/main/requests.md).
+
+11. After downloading all the Static Data and updating it in the Cache in your User `%AppData%/LocalLow/`, they must finish up. MSM will send `gs_player` to get all Player Data, then process any Previous Purchases, and finally load your Player Data.
