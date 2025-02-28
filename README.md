@@ -24,11 +24,26 @@ When you click play, MSM does several things.
 | Name | Type | Description |
 | --- | --- | --- |
 | `ok` | boolean | `true` if successful, `false` if not. All other params will not be sent if `false` |
-| `user_game_ids` | table | List of Game IDs the account is associated with. Usually, you only have one profile, so you only have one ID. |
-| `login_types` | table | List of Login Types the account uses |
-| `access_token` | string | Encrypted Access Token the Client uses for several cases. Contains an Encrypted JSON with your Account ID `account_id`, User Game IDs (same as the one in the response), Game ID `game` (1 or 27), Token Version `token_version` (1), Generated On `generated_on` (Current Unix Time) Expires At `expires_at`, Username `username` and Login Type `login_type`
+| `user_game_ids` | array | List of Game IDs the account is associated with. (Usually only one) |
+| `login_types` | array | List of Login Types the account uses (Usually only one) |
+| `access_token` | string | Encrypted Access Token the Client uses for several cases. Contains an Encrypted JSON. More below.
 | `token_type` | string | Token Type used (Always `bearer`). |
-| `expires_at` | long | Current Unix Time + 1200 |
+| `expires_at` | long | When it will expire (Current Unix Time + 1200) |
+
+Decrypted Access Token:
+| Name | Type | Description |
+| --- | --- | --- |
+| `account_id` | string | Account ID associated with you |
+| `user_game_ids` | array | List of Game IDs the account is associated with. Usually, you only have one profile, so you only have one ID. |
+| `g` | int | Game ID associated with the platform you're playing on (1 or 27) |
+| `token_version` | int | Version the Token is using (always 1) |
+| `generated_on` | long | When the Token was generated (Current Unix Time) |
+| `expires_at` | long | When it will expire (Current Unix Time + 1200) |
+| `username` | string | Account Login Username |
+| `login_type` | string | Current Login Type |
+
+>[!NOTE]
+>`user_game_id`, `username` and `account_id` are **completely seperate** do **not** mistake them for eachother. 
 
 3. Afterwards, MSM sends a POST request to `msmpc.bbbgame.net/pregame_setup` (`msm-auth.bbbgame.net/pregame_setup` for mobile), and if it's successful, it'll respond with several elements:
 
