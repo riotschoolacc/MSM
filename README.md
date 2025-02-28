@@ -77,17 +77,19 @@ Login Params:
 | `access_key` | string | (Required) A hardcoded string inside the MSM EXE |
 | `client_version` | string | (Required) The current Client Version |
 | `last_updated` | long | (Not Required) Client Last Update Unix Timestamp |
-| `last_update_version` | string | (Required) Client Last Updated Version |
+| `last_update_version` | string | ((Not Required) Client Last Updated Version |
 | `client_device` | string | (Not Required) Client Device ID |
 | `client_os` | string | (Not Required) Client Device OS Version |
-| `client_platform` | string | (Required) Client MSM Platform (Mobile or PC) |
+| `client_platform` | string | (Not Required) Client MSM Platform (Mobile or PC) |
 | `client_subplatform` | string | (Not Required) Client MSM Sub-Platform (Steam) |
 | `raw_device_id` | string | (Not Required) Raw Client Device ID |
-| `client_lang` | string | (Required) Language the Client prefers |
+| `client_lang` | string | (Not Required) Language the Client prefers |
 
-#### Even if a param is not required, the Client still sends it. 
+#### Even if a param is Not Required, the Client still sends it. 
 
-7. If all goes well, the server should add multiple elements to your Session Object via the Decrypted Token.
+##### MSM will still use the Not Required params if they're sent.
+
+7. If all goes well, the server should add multiple elements to your Session Object, some via the Decrypted Token.
 
 New Session Params:
 | Name | Type | Description |
@@ -134,4 +136,4 @@ New User Params:
 
 12. After downloading all the Static Data and updating it in the Cache in your User `%AppData%/LocalLow/`, they must finish up. MSM will send `gs_player` to get all Player Data, then process any Previous Purchases, and finally load your Player Data.
 
-If you were able to Stomach all of that, good for you, but now it's time for the Real Game.
+If you were able to stomach all of that, good for you, but now it's time for the Real Game.
