@@ -39,7 +39,7 @@ When you click play, MSM does several things.
 | `serverIp` | string | IP that the Client will use to connect to |
 | `contentUrl` | string | URL that MSM downloads update content from |
 
-4. Next, MSM will attempt to download the new files via the `contentUrl` and stores them in your User `%AppData%/LocalLow/`.
+4. Next, MSM will attempt to download the new files via the `contentUrl` and store them in your User `%AppData%/LocalLow/`.
 
 >[!NOTE]
 >Reminder that MSM uses Smartfox2X for all it's Client➔Server necessities.
@@ -62,4 +62,8 @@ Login Params:
 | `access_key` | string | A hardcoded string inside the MSM EXE |
 | `client_version` | string | The current Client Version |
 
-7. Now, if it's all successful, the server should add multiple elements to your User and Session, and send `gs_initialized`.
+7. If all goes well, the server should add multiple elements to your User Object and send `gs_initialized` with one parameter: your `bbb_id`.
+
+8. Now MSM needs to download all the [Static Data](https://www.indeed.com/career-advice/career-development/static-data-vs-dynamic-data). MSM sends 1 param for all of them, `last_updated`, although it is not required. You can view all Requests MSM sends [here](https://github.com/riotschoolacc/MSM-Server-Tools/blob/main/requests.md).
+
+9. After downloading all the Static Data and updating it in the Cache, they must finish up. MSM will send `gs_player` to get all Player Data, then process any Previous Purchases, and finally load your Player Data.
