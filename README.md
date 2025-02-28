@@ -123,8 +123,8 @@ New User Params:
 | `client_os` | string | The `client_os` from your Session Params |
 | `ip_address` | string | The Users IP Address |
 | `client_lang` | string | the `client_lang` from your Session Params |
-| `idfv` | string | (**Only if `client_platform` is `ios`) The `raw_device_id` from your Session Params |
-| `android_id` | string | (**Only if `client_platform` is `android`) The `raw_device_id` from your Session Params |
+| `idfv` | string | (**Only if `client_platform` is `ios`**) The `raw_device_id` from your Session Params |
+| `android_id` | string | (**Only if `client_platform` is `android`**) The `raw_device_id` from your Session Params |
 
 9. After the User has joined the `zone`, the Server will send `gs_initialized` with one param, your `bbb_id`.
 
